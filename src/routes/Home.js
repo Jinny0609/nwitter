@@ -6,7 +6,10 @@ import NweetFactory from "components/NweetFactory";
 const Home = ({ userObj }) => {
   const [nweets, setNweets] = useState([]);
   useEffect(() => {
-    dbService.collection("nweets").onSnapshot((snapshot) => {
+    dbService
+    .collection("nweets")
+    .orderBy("createdAt", "desc")
+    .onSnapshot((snapshot) => {
       const newArray = snapshot.docs.map((document) => ({
         id: document.id,
         ...document.data(),
@@ -16,9 +19,9 @@ const Home = ({ userObj }) => {
   }, []);
 
   return (
-    <>
+    <div className="container">
       <NweetFactory userObj={userObj} />
-      <div>
+      <div style={{marginTop: 30}}>
         {nweets.map((nweet) => (
           <Nweet
             key={nweet.id}
@@ -27,7 +30,7 @@ const Home = ({ userObj }) => {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
